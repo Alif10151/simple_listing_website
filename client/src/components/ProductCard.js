@@ -1,0 +1,74 @@
+// import React from 'react';
+// import '../styles/ProductCard.css';
+
+// function ProductCard({ product, onEdit, onDelete }) {
+//   return (
+//     <div className="product-card">
+//       <div className="product-details">
+//         <h3>{product.title}</h3>
+//         <p>{product.description}</p>
+//         <p>Price: ${product.price}</p>
+//       </div>
+//       <div className="product-actions">
+//         <button onClick={() => onEdit(product)}>Edit</button>
+//         <button onClick={() => onDelete(product._id)}>Delete</button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default ProductCard;
+
+// import React from 'react';
+// import '../styles/ProductCard.css';
+
+// function ProductCard({ product, onEdit, onDelete }) {
+//   return (
+//     <div className="product-card">
+//       <div className="product-details">
+//         <h3>{product.title}</h3>
+//       <div className="product-image">
+//         <img src={product.imageUrl} alt={product.title} />
+//       </div>
+//         <p>{product.description}</p>
+//         <p>Price: ${product.price}</p>
+//       </div>
+//       <div className="product-actions">
+//         <button onClick={() => onEdit(product)}>Edit</button>
+//         <button onClick={() => onDelete(product._id)}>Delete</button>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default ProductCard;
+
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/ProductCard.css';
+
+function ProductCard({ product, onEdit, onDelete }) {
+  return (
+    <div className="product-card">
+      <div className="product-image">
+        {/* CHANGE 1: Access product.image_url instead of product.imageUrl */}
+        <img src={product.image_url} alt={product.title} />
+      </div>
+      <div className="product-details">
+        <h3>{product.title}</h3>
+        <p>{product.description}</p>
+        <p>Price: ${product.price}</p>
+      </div>
+      <div className="product-actions">
+        <button onClick={() => onEdit(product)}>Edit</button>
+        {/* CHANGE 2: Pass product.id to onDelete instead of product._id */}
+        <button onClick={() => onDelete(product.id)}>Delete</button>
+        {/* CHANGE 3: Use product.id for the Link path as well */}
+        <Link to={`/product/${product.id}`}>View Details</Link>
+      </div>
+    </div>
+  );
+}
+
+export default ProductCard;
