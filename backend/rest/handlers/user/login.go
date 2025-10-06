@@ -1,8 +1,6 @@
 package user
 
 import (
-	"ecommerce/config"
-	"ecommerce/database"
 	"ecommerce/utility"
 	"encoding/json"
 	"fmt"
@@ -15,25 +13,23 @@ type ReqLogin struct {
 }
 
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
-	var reqLogin ReqLogin
+	var req ReqLogin
 
 	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&reqLogin)
+	err := decoder.Decode(&req)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, "Invalid Request data", http.StatusBadRequest)
+		utility.SendError(w, http.StatusBadRequest, "Invalid Req body")
 		return
 	}
 
-	usr := database.Find(reqLogin.Email, reqLogin.Password)
-	if usr == nil {
-		http.Error(w, "Invalid credentials", http.StatusBadRequest)
+	usr, err := h.userRepo.Find(req.Email, req.Password)
+	if err != nil {
+		utility.SendError(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
-	cnf := config.GetConfig()
-
-	accesstoken, err := utility.CreateJwt(cnf.JwtSecretKey, utility.Payload{ //jwt secret key also known as accesstoken
+	accesstoken, err := utility.CreateJwt(h.cnf.JwtSecretKey, utility.Payload{ //jwt secret key also known as accesstoken
 		Sub:       usr.ID,
 		FirstName: usr.FirstName,
 		LastName:  usr.LastName,
@@ -44,5 +40,5 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-	utility.SendData(w, accesstoken, http.StatusCreated)
+	utility.SendData(w, http.StatusCreated, accesstoken)
 }
