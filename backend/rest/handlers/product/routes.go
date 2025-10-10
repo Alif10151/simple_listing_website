@@ -12,7 +12,7 @@ func (h *Handler) RegisterRoutes(mux *http.ServeMux, manager *middleware.Manager
 			http.HandlerFunc(h.GetProducts),
 		),
 	)
-	mux.Handle("POST   /products",
+	mux.Handle("POST /products",
 		manager.With(
 			http.HandlerFunc(h.CreateProduct),
 			h.middlewares.AuthenticationJWT,
