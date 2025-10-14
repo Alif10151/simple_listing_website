@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"ecommerce/config"
+	"ecommerce/infrastructure/db"
 	"ecommerce/repo"
 	"ecommerce/rest"
 	"ecommerce/rest/handlers/product"
@@ -26,7 +27,7 @@ func Serve() {
 	productRepo := repo.NewProductRepo()
 	productHandler := product.NewHandler(middlewares, productRepo)
 
-	userRepo := repo.NewUserRepo()
+	userRepo := repo.NewUserRepo(dbCon)
 	userHandler := user.NewHandler(cnf, userRepo)
 
 	server := rest.NewServer(

@@ -30,7 +30,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	usr, err := h.userRepo.Create(repo.User{
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
-		Email:       req.LastName,
+		Email:       req.Email,
 		Password:    req.Password,
 		IsShopOwner: req.IsShopOwner,
 	})

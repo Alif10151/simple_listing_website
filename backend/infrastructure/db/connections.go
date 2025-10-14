@@ -8,7 +8,7 @@ import (
 )
 
 func GetConnectionString() string {
-	return "user=postgres password=hello02 host=localhost port=5432 dbname=ecommerce"
+	return "user=postgres password=hello02 host=localhost port=5432 dbname=ecommerce sslmode=disable"
 
 }
 
